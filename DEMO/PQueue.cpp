@@ -152,40 +152,40 @@ void createPQueue(PQueue& PQU) {
 	}
 
 }
-//void loadTTSinhVien(FILE* file, ItemType& x)
-//{
-//	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, &x.TenSV, &x.Lop, &x.Ill, &x.CV, &x.Tgian);
-//}
-//void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
-//	FILE* file;
-//	if (fopen_s(&file, FileName, "rt") != 0) {
-//		printf("\nLoi doc file %s.", FileName);
-//		return;
-//	}
-//
-//	int n;
-//	fscanf_s(file, "%d\n", &n); // Read the number of elements
-//
-//	for (int i = 0; i < n; i++) {
-//		ItemType x;
-//		fscanf_s(file, "%d#%[^\n]#%[^\n]#%c#%d#%d\n",
-//			&x.Mssv, x.TenSV, MAX_NAME_LEN, x.Lop, MAX_CLASS_LEN, &x.Ill[0], 1, &x.CV, &x.Tgian);
-//
-//		// Check for missing delimiter after student name
-//		if (x.TenSV[strcspn(x.TenSV, "#")] == '\0') {
-//			// Handle empty name (e.g., assign default value)
-//			printf("Warning: Student name missing in line %d\n", i + 1);
-//			strcpy(x.TenSV, "Unknown");
-//		}
-//
-//		// Similar checks can be added for other fields
-//
-//		PQueueNode* p = createPQueueNode(x);
-//		if (insert(qu, p) == 0) continue;
-//	}
-//
-//	fclose(file); // Close the file
-//}
+void loadTTSinhVien(FILE* file, ItemType& x)
+{
+	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, &x.TenSV, &x.Lop, &x.Ill, &x.CV, &x.Tgian);
+}
+void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
+	FILE* file;
+	if (fopen_s(&file, FileName, "rt") != 0) {
+		printf("\nLoi doc file %s.", FileName);
+		return;
+	}
+
+	int n;
+	fscanf_s(file, "%d\n", &n); // Read the number of elements
+
+	for (int i = 0; i < n; i++) {
+		ItemType x;
+		fscanf_s(file, "%d#%[^\n]#%[^\n]#%c#%d#%d\n",
+			&x.Mssv, x.TenSV, MAX_NAME_LEN, x.Lop, MAX_CLASS_LEN, &x.Ill[0], 1, &x.CV, &x.Tgian);
+
+		// Check for missing delimiter after student name
+		if (x.TenSV[strcspn(x.TenSV, "#")] == '\0') {
+			// Handle empty name (e.g., assign default value)
+			printf("Warning: Student name missing in line %d\n", i + 1);
+			strcpy(x.TenSV, "Unknown");
+		}
+
+		// Similar checks can be added for other fields
+
+		PQueueNode* p = createPQueueNode(x);
+		if (insert(qu, p) == 0) continue;
+	}
+
+	fclose(file); // Close the file
+}
 void process() {
 	ItemType X, Y;
 	PQueueNode* P, * Q;
