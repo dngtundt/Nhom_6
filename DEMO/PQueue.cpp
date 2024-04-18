@@ -190,6 +190,8 @@ void createPQueue(PQueue& PQU) {
 //		if (insert(qu, p) == 0) {
 //			printf("\nError inserting node into priority queue.");
 //			fclose(file);
+// 
+// 
 //			return;
 //		}
 //	}
