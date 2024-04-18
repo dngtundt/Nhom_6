@@ -1,4 +1,4 @@
-#ifndef PQueue_h
+﻿#ifndef PQueue_h
 #define PQueue_h
 
 
@@ -26,6 +26,7 @@ typedef SinhVien ItemType; //Khai bao kieu du lieu nguoi dung
 
 struct PQueueNode {
 	ItemType Info; //Luu thong tin cua mot node
+	int priority;// tính độ ưu tiên của sinh viên
 	PQueueNode* Next; // Luu con tro den ke sau (neu co)
 };
 
@@ -48,7 +49,7 @@ int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
 int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
-void createPQueue_LoadTextFile(PQueue& qu, char FileName[]); //Tao hang doi tu file TEXT
+//void createPQueue_LoadTextFile(PQueue& qu, char FileName[]); //Tao hang doi tu file TEXT
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
 #endif  PQueue_h

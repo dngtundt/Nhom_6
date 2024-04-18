@@ -84,7 +84,7 @@ void menuYeuTien() {
 	printf("\n= 5. Mua sach CNTT                                      =");
 	printf("\n");
 }
-//====================================================
+//====================================================	
 void nhapTTSinhVien(ItemType& x)
 {
 	printf("Nhap ma so sinh vien: ");
@@ -152,40 +152,52 @@ void createPQueue(PQueue& PQU) {
 	}
 
 }
-void loadTTSinhVien(FILE* file, ItemType& x)
-{
-	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, &x.TenSV, &x.Lop, &x.Ill, &x.CV, &x.Tgian);
-}
-void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
-	FILE* file;
-	if (fopen_s(&file, FileName, "rt") != 0) {
-		printf("\nLoi doc file %s.", FileName);
-		return;
-	}
+//void loadTTSinhVien(FILE* file, ItemType& x)
+//{
+//	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, x.TenSV, x.Lop, x.Ill, x.CV, &x.Tgian);
+//}
+//void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
+//	FILE* file;
+//	errno_t err = fopen_s(&file, FileName, "rt");
+//	if (err != 0 || file == nullptr) {
+//		printf("\nError opening file %s. Error code: %d", FileName, err);
+//		return;
+//	}
+//
+//	int n;
+//	if (fscanf_s(file, "%d\n", &n) != 1) {
+//		printf("\nError reading number of elements from file %s.", FileName);
+//		fclose(file);
+//		return;
+//	}
+//
+//	for (int i = 0; i < n; i++) {
+//		ItemType x;
+//		if (fscanf_s(file, "%d#%[^#]s#%[^#]s#%c#%d#%d\n",
+//			&x.Mssv, x.TenSV, sizeof(x.TenSV), x.Lop, sizeof(x.Lop), &x.Ill, 1, &x.CV, &x.Tgian) != 6) {
+//			printf("\nError reading data from file %s at line %d.", FileName, i + 2);
+//			fclose(file);
+//			return;
+//		}
+//
+//		PQueueNode* p = createPQueueNode(x);
+//		if (p == nullptr) {
+//			printf("\nMemory allocation error while creating node.");
+//			fclose(file);
+//			return;
+//		}
+//
+//		if (insert(qu, p) == 0) {
+//			printf("\nError inserting node into priority queue.");
+//			fclose(file);
+//			return;
+//		}
+//	}
+//
+//	printf("\nData loaded successfully from file %s.", FileName);
+//	fclose(file);
+//}
 
-	int n;
-	fscanf_s(file, "%d\n", &n); // Read the number of elements
-
-	for (int i = 0; i < n; i++) {
-		ItemType x;
-		fscanf_s(file, "%d#%[^\n]#%[^\n]#%c#%d#%d\n",
-			&x.Mssv, x.TenSV, MAX_NAME_LEN, x.Lop, MAX_CLASS_LEN, &x.Ill[0], 1, &x.CV, &x.Tgian);
-
-		// Check for missing delimiter after student name
-		if (x.TenSV[strcspn(x.TenSV, "#")] == '\0') {
-			// Handle empty name (e.g., assign default value)
-			printf("Warning: Student name missing in line %d\n", i + 1);
-			strcpy(x.TenSV, "Unknown");
-		}
-
-		// Similar checks can be added for other fields
-
-		PQueueNode* p = createPQueueNode(x);
-		if (insert(qu, p) == 0) continue;
-	}
-
-	fclose(file); // Close the file
-}
 void process() {
 	ItemType X, Y;
 	PQueueNode* P, * Q;
@@ -216,11 +228,11 @@ void process() {
 			printf("\nDanh sach bai hat vua nhap: ");
 			showPQueue(PQU);
 			break;
-	/*	case 3:
-			createPQueue_LoadTextFile(PQU, FileName);
-			printf("\nDanh sach vua load tu text file: ");
-			showPQueue(PQU);
-			break;*/
+		//case 3:
+		//	createPQueue_LoadTextFile(PQU, FileName);
+		//	printf("\nDanh sach vua load tu text file: ");
+		//	showPQueue(PQU);
+		//	break;
 		}
 	} while (luachon !=0);
 }
