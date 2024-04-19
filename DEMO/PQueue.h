@@ -7,9 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-
-#include <sstream>
+#define _CRT_SECURE_NO_WARNINGS
 
 //Khai bao du lieu
 struct SinhVien
@@ -50,7 +48,7 @@ int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
 int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
-void createPQueue_LoadTextFile(PQueue& qu, const std::string& filename); //Tao hang doi tu file TEXT
+void createPQueue_LoadTextFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
 #endif  PQueue_h

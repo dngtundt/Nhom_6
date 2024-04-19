@@ -1,8 +1,7 @@
 ﻿#include"PQueue.h"
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 PQueueNode* createPQueueNode(ItemType x) {
 	//Cap phat 1 node moi de luu tru gia tri x
@@ -43,21 +42,32 @@ int isEmpty(PQueue qu) {
 	}
 }
 
+const char* getJobDescription(int jobCode) {
+	switch (jobCode) {
+	case 1: return "Gap giao vien";
+	case 2: return "Phuc khao diem";
+	case 3: return "Yeu cau chuyen khoa";
+	case 4: return "Dang ki du thi chung chi CNTT";
+	case 5: return "Mua sach CNTT";
+	default: return "Khong xac dinh";
+	}
+}
+
 //====================================================
 void showPQueue(PQueue qu) {
-	// Kiểm tra xem hàng đợi có trống không
 	if (isEmpty(qu) == 1) {
 		printf("Hang doi rong!");
 		return;
 	}
 
-	// In tiêu đề cho từng cột
-	printf("\n%-4s  %-15s  %-20s  %-10s  %-10s  %-25s  %-10s\n", "STT", "MA SO SINH VIEN", "TEN SINH VIEN", "LOP", "BENH", "CONG VIEC", "THOI GIAN");
+	printf("\n%-4s  %-15s  %-20s  %-10s  %-10s  %-30s  %-10s\n", "STT", "MA SO SINH VIEN", "TEN SINH VIEN", "LOP", "BENH", "CONG VIEC", "THOI GIAN");
 
 	int stt = 1;
 	for (PQueueNode* p = qu.Head; p != NULL; p = p->Next) {
-		// In thông tin của mỗi sinh viên
-		printf("%-4d  %-15d  %-20s  %-10s  %-10s  %-25d  %-10d\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, p->Info.Ill, p->Info.CV, p->Info.Tgian);
+		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
+		const char* jobDescription = getJobDescription(p->Info.CV);
+
+		printf("%-4d  %-15d  %-20s  %-10s  %-10s  %-30s  %d gio\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
 	}
 }
 
@@ -162,55 +172,63 @@ void createPQueue(PQueue& PQU) {
 //	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, x.TenSV, x.Lop, x.Ill, x.CV, &x.Tgian);
 //}
 
-static void createPQueue_LoadTextFile(PQueue& qu, const std::string& filename) {
-	std::ifstream file(filename);
-	if (!file.is_open()) {
-		std::cerr << "Unable to open file: " << filename << std::endl;
+void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
+	FILE* file;
+	file = fopen(fileName, "r");
+	if (file == NULL) {
+		printf("Error opening file %s.\n", fileName);
 		return;
 	}
 
-	std::string line;
-	std::getline(file, line);
-	int count = std::stoi(line);
+	int n;
+	if (fscanf(file, "%d\n", &n) != 1) {
+		printf("Error reading number of elements from file %s.\n", fileName);
+		fclose(file);
+		return;
+	}
 
-	for (int i = 0; i < count; i++) {
-		if (!std::getline(file, line)) {
-			std::cerr << "Failed to read line " << i + 1 << " from file." << std::endl;
+	for (int i = 0; i < n; i++) {
+		ItemType x;
+		char line[1024];
+		if (fgets(line, sizeof(line), file) == NULL) {
+			printf("Error reading line %d from file %s.\n", i + 1, fileName);
 			continue;
 		}
 
-		std::istringstream iss(line);
-		std::string token;
-		SinhVien sv{};
+		char* token = strtok(line, "#");
+		x.Mssv = atoi(token);
 
-		std::getline(iss, token, '#');
-		sv.Mssv = std::stoi(token);
+		token = strtok(NULL, "#");
+		strncpy(x.TenSV, token, sizeof(x.TenSV) - 1);
+		x.TenSV[sizeof(x.TenSV) - 1] = '\0';
 
-		std::getline(iss, token, '#');
-		strncpy_s(sv.TenSV, token.c_str(), sizeof(sv.TenSV) - 1);
-		sv.TenSV[sizeof(sv.TenSV) - 1] = '\0';
+		token = strtok(NULL, "#");
+		strncpy(x.Lop, token, sizeof(x.Lop) - 1);
+		x.Lop[sizeof(x.Lop) - 1] = '\0';
 
-		std::getline(iss, token, '#');
-		strncpy_s(sv.Lop, token.c_str(), sizeof(sv.Lop) - 1);
-		sv.Lop[sizeof(sv.Lop) - 1] = '\0';
+		token = strtok(NULL, "#");
+		strncpy(x.Ill, token, sizeof(x.Ill) - 1);
+		x.Ill[sizeof(x.Ill) - 1] = '\0';
 
-		std::getline(iss, token, '#');
-		strncpy_s(sv.Ill, token.c_str(), sizeof(sv.Ill) - 1);
-		sv.Ill[sizeof(sv.Ill) - 1] = '\0';
+		token = strtok(NULL, "#");
+		x.CV = atoi(token);
 
-		std::getline(iss, token, '#');
-		sv.CV = std::stoi(token);
+		token = strtok(NULL, "#");
+		x.Tgian = atoi(token);
 
-		std::getline(iss, token, '#');
-		sv.Tgian = std::stoi(token);
+		PQueueNode* p = createPQueueNode(x);
+		if (p == NULL) {
+			printf("Error creating node for line %d.\n", i + 1);
+			continue;
+		}
 
-		PQueueNode* pNode = createPQueueNode(sv);
-		if (!insert(qu, pNode)) {
-			std::cerr << "Failed to insert node into the queue." << std::endl;
+
+		if (insert(qu, p) == 0) {
+			printf("Error inserting node into priority queue for line %d.\n", i + 1);
 		}
 	}
 
-	file.close();
+	fclose(file);
 }
 
 void process() {
@@ -220,7 +238,7 @@ void process() {
 	initPQueue(PQU);
 	int luachon;
 	int kq;
-	std::string filename = "dsSinhVien.txt";
+	const char* fileName = "dsSinhVien.txt";
 	do
 	{
 		showMenu();
@@ -244,8 +262,10 @@ void process() {
 			showPQueue(PQU);
 			break;
 		case 3:
-			createPQueue_LoadTextFile(PQU, filename);
+			createPQueue_LoadTextFile(PQU, fileName);
 			showPQueue(PQU);
+			break;
+		default:
 			break;
 		}
 	} while (luachon !=0);
