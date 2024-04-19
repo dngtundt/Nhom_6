@@ -1,4 +1,8 @@
 ﻿#include"PQueue.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 PQueueNode* createPQueueNode(ItemType x) {
 	//Cap phat 1 node moi de luu tru gia tri x
 	PQueueNode* p = new PQueueNode;
@@ -38,21 +42,32 @@ int isEmpty(PQueue qu) {
 	}
 }
 
+const char* getJobDescription(int jobCode) {
+	switch (jobCode) {
+	case 1: return "Gap giao vien";
+	case 2: return "Phuc khao diem";
+	case 3: return "Yeu cau chuyen khoa";
+	case 4: return "Dang ki du thi chung chi CNTT";
+	case 5: return "Mua sach CNTT";
+	default: return "Khong xac dinh";
+	}
+}
+
 //====================================================
 void showPQueue(PQueue qu) {
-	// Kiểm tra xem hàng đợi có trống không
 	if (isEmpty(qu) == 1) {
 		printf("Hang doi rong!");
 		return;
 	}
 
-	// In tiêu đề cho từng cột
-	printf("\n%-4s  %-15s  %-20s  %-10s  %-10s  %-25s  %-10s\n", "STT", "MA SO SINH VIEN", "TEN SINH VIEN", "LOP", "BENH", "CONG VIEC", "THOI GIAN");
+	printf("\n%-4s  %-15s  %-20s  %-10s  %-10s  %-30s  %-10s\n", "STT", "MA SO SINH VIEN", "TEN SINH VIEN", "LOP", "BENH", "CONG VIEC", "THOI GIAN");
 
 	int stt = 1;
 	for (PQueueNode* p = qu.Head; p != NULL; p = p->Next) {
-		// In thông tin của mỗi sinh viên
-		printf("%-4d  %-15d  %-20s  %-10s  %-10s  %-25d  %-10d\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, p->Info.Ill, p->Info.CV, p->Info.Tgian);
+		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
+		const char* jobDescription = getJobDescription(p->Info.CV);
+
+		printf("%-4d  %-15d  %-20s  %-10s  %-10s  %-30s  %d gio\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
 	}
 }
 
@@ -156,49 +171,65 @@ void createPQueue(PQueue& PQU) {
 //{
 //	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, x.TenSV, x.Lop, x.Ill, x.CV, &x.Tgian);
 //}
-//void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
-//	FILE* file;
-//	errno_t err = fopen_s(&file, FileName, "rt");
-//	if (err != 0 || file == nullptr) {
-//		printf("\nError opening file %s. Error code: %d", FileName, err);
-//		return;
-//	}
-//
-//	int n;
-//	if (fscanf_s(file, "%d\n", &n) != 1) {
-//		printf("\nError reading number of elements from file %s.", FileName);
-//		fclose(file);
-//		return;
-//	}
-//
-//	for (int i = 0; i < n; i++) {
-//		ItemType x;
-//		if (fscanf_s(file, "%d#%[^#]s#%[^#]s#%c#%d#%d\n",
-//			&x.Mssv, x.TenSV, sizeof(x.TenSV), x.Lop, sizeof(x.Lop), &x.Ill, 1, &x.CV, &x.Tgian) != 6) {
-//			printf("\nError reading data from file %s at line %d.", FileName, i + 2);
-//			fclose(file);
-//			return;
-//		}
-//
-//		PQueueNode* p = createPQueueNode(x);
-//		if (p == nullptr) {
-//			printf("\nMemory allocation error while creating node.");
-//			fclose(file);
-//			return;
-//		}
-//
-//		if (insert(qu, p) == 0) {
-//			printf("\nError inserting node into priority queue.");
-//			fclose(file);
-// 
-// 
-//			return;
-//		}
-//	}
-//
-//	printf("\nData loaded successfully from file %s.", FileName);
-//	fclose(file);
-//}
+
+void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
+	FILE* file;
+	file = fopen(fileName, "r");
+	if (file == NULL) {
+		printf("Error opening file %s.\n", fileName);
+		return;
+	}
+
+	int n;
+	if (fscanf(file, "%d\n", &n) != 1) {
+		printf("Error reading number of elements from file %s.\n", fileName);
+		fclose(file);
+		return;
+	}
+
+	for (int i = 0; i < n; i++) {
+		ItemType x;
+		char line[1024];
+		if (fgets(line, sizeof(line), file) == NULL) {
+			printf("Error reading line %d from file %s.\n", i + 1, fileName);
+			continue;
+		}
+
+		char* token = strtok(line, "#");
+		x.Mssv = atoi(token);
+
+		token = strtok(NULL, "#");
+		strncpy(x.TenSV, token, sizeof(x.TenSV) - 1);
+		x.TenSV[sizeof(x.TenSV) - 1] = '\0';
+
+		token = strtok(NULL, "#");
+		strncpy(x.Lop, token, sizeof(x.Lop) - 1);
+		x.Lop[sizeof(x.Lop) - 1] = '\0';
+
+		token = strtok(NULL, "#");
+		strncpy(x.Ill, token, sizeof(x.Ill) - 1);
+		x.Ill[sizeof(x.Ill) - 1] = '\0';
+
+		token = strtok(NULL, "#");
+		x.CV = atoi(token);
+
+		token = strtok(NULL, "#");
+		x.Tgian = atoi(token);
+
+		PQueueNode* p = createPQueueNode(x);
+		if (p == NULL) {
+			printf("Error creating node for line %d.\n", i + 1);
+			continue;
+		}
+
+
+		if (insert(qu, p) == 0) {
+			printf("Error inserting node into priority queue for line %d.\n", i + 1);
+		}
+	}
+
+	fclose(file);
+}
 
 void process() {
 	ItemType X, Y;
@@ -207,7 +238,7 @@ void process() {
 	initPQueue(PQU);
 	int luachon;
 	int kq;
-	char FileName[51] = "dsSinhVien.txt";
+	const char* fileName = "dsSinhVien.txt";
 	do
 	{
 		showMenu();
@@ -230,11 +261,12 @@ void process() {
 			printf("\nDanh sach bai hat vua nhap: ");
 			showPQueue(PQU);
 			break;
-		//case 3:
-		//	createPQueue_LoadTextFile(PQU, FileName);
-		//	printf("\nDanh sach vua load tu text file: ");
-		//	showPQueue(PQU);
-		//	break;
+		case 3:
+			createPQueue_LoadTextFile(PQU, fileName);
+			showPQueue(PQU);
+			break;
+		default:
+			break;
 		}
 	} while (luachon !=0);
 }

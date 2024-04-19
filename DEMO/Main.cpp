@@ -1,4 +1,5 @@
-#include"PQueue.h"
+﻿#include"PQueue.h"
 int main() {
 	process();
+	return 0;
 }
