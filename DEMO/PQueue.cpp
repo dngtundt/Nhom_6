@@ -1,4 +1,9 @@
 ﻿#include"PQueue.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+
 PQueueNode* createPQueueNode(ItemType x) {
 	//Cap phat 1 node moi de luu tru gia tri x
 	PQueueNode* p = new PQueueNode;
@@ -156,49 +161,57 @@ void createPQueue(PQueue& PQU) {
 //{
 //	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, x.TenSV, x.Lop, x.Ill, x.CV, &x.Tgian);
 //}
-//void createPQueue_LoadTextFile(PQueue& qu, const char* FileName) {
-//	FILE* file;
-//	errno_t err = fopen_s(&file, FileName, "rt");
-//	if (err != 0 || file == nullptr) {
-//		printf("\nError opening file %s. Error code: %d", FileName, err);
-//		return;
-//	}
-//
-//	int n;
-//	if (fscanf_s(file, "%d\n", &n) != 1) {
-//		printf("\nError reading number of elements from file %s.", FileName);
-//		fclose(file);
-//		return;
-//	}
-//
-//	for (int i = 0; i < n; i++) {
-//		ItemType x;
-//		if (fscanf_s(file, "%d#%[^#]s#%[^#]s#%c#%d#%d\n",
-//			&x.Mssv, x.TenSV, sizeof(x.TenSV), x.Lop, sizeof(x.Lop), &x.Ill, 1, &x.CV, &x.Tgian) != 6) {
-//			printf("\nError reading data from file %s at line %d.", FileName, i + 2);
-//			fclose(file);
-//			return;
-//		}
-//
-//		PQueueNode* p = createPQueueNode(x);
-//		if (p == nullptr) {
-//			printf("\nMemory allocation error while creating node.");
-//			fclose(file);
-//			return;
-//		}
-//
-//		if (insert(qu, p) == 0) {
-//			printf("\nError inserting node into priority queue.");
-//			fclose(file);
-// 
-// 
-//			return;
-//		}
-//	}
-//
-//	printf("\nData loaded successfully from file %s.", FileName);
-//	fclose(file);
-//}
+
+static void createPQueue_LoadTextFile(PQueue& qu, const std::string& filename) {
+	std::ifstream file(filename);
+	if (!file.is_open()) {
+		std::cerr << "Unable to open file: " << filename << std::endl;
+		return;
+	}
+
+	std::string line;
+	std::getline(file, line);
+	int count = std::stoi(line);
+
+	for (int i = 0; i < count; i++) {
+		if (!std::getline(file, line)) {
+			std::cerr << "Failed to read line " << i + 1 << " from file." << std::endl;
+			continue;
+		}
+
+		std::istringstream iss(line);
+		std::string token;
+		SinhVien sv{};
+
+		std::getline(iss, token, '#');
+		sv.Mssv = std::stoi(token);
+
+		std::getline(iss, token, '#');
+		strncpy_s(sv.TenSV, token.c_str(), sizeof(sv.TenSV) - 1);
+		sv.TenSV[sizeof(sv.TenSV) - 1] = '\0';
+
+		std::getline(iss, token, '#');
+		strncpy_s(sv.Lop, token.c_str(), sizeof(sv.Lop) - 1);
+		sv.Lop[sizeof(sv.Lop) - 1] = '\0';
+
+		std::getline(iss, token, '#');
+		strncpy_s(sv.Ill, token.c_str(), sizeof(sv.Ill) - 1);
+		sv.Ill[sizeof(sv.Ill) - 1] = '\0';
+
+		std::getline(iss, token, '#');
+		sv.CV = std::stoi(token);
+
+		std::getline(iss, token, '#');
+		sv.Tgian = std::stoi(token);
+
+		PQueueNode* pNode = createPQueueNode(sv);
+		if (!insert(qu, pNode)) {
+			std::cerr << "Failed to insert node into the queue." << std::endl;
+		}
+	}
+
+	file.close();
+}
 
 void process() {
 	ItemType X, Y;
@@ -207,7 +220,7 @@ void process() {
 	initPQueue(PQU);
 	int luachon;
 	int kq;
-	char FileName[51] = "dsSinhVien.txt";
+	std::string filename = "dsSinhVien.txt";
 	do
 	{
 		showMenu();
@@ -230,11 +243,10 @@ void process() {
 			printf("\nDanh sach bai hat vua nhap: ");
 			showPQueue(PQU);
 			break;
-		//case 3:
-		//	createPQueue_LoadTextFile(PQU, FileName);
-		//	printf("\nDanh sach vua load tu text file: ");
-		//	showPQueue(PQU);
-		//	break;
+		case 3:
+			createPQueue_LoadTextFile(PQU, filename);
+			showPQueue(PQU);
+			break;
 		}
 	} while (luachon !=0);
 }
