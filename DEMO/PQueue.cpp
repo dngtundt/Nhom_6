@@ -166,12 +166,6 @@ void createPQueue(PQueue& PQU) {
 		if (insert(PQU, p) == 0) continue;
 	}
 
-}
-//void loadTTSinhVien(FILE* file, ItemType& x)
-//{
-//	fscanf_s(file, "%d#%[^#]#%[^#]#%[^#]#%d#%d\n", &x.Mssv, x.TenSV, x.Lop, x.Ill, x.CV, &x.Tgian);
-//}
-
 void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 	FILE* file;
 	file = fopen(fileName, "r");
