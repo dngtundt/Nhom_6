@@ -166,6 +166,7 @@ void createPQueue(PQueue& PQU) {
 		if (insert(PQU, p) == 0) continue;
 	}
 
+}
 void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 	FILE* file;
 	file = fopen(fileName, "r");
@@ -250,7 +251,7 @@ void process() {
 			printf("\nNoi dung hang doi la: ");
 			showPQueue(PQU);
 			break;
-		case 2: 
+		case 2:
 			createPQueue(PQU);
 			printf("\nDanh sach bai hat vua nhap: ");
 			showPQueue(PQU);
@@ -262,5 +263,5 @@ void process() {
 		default:
 			break;
 		}
-	} while (luachon !=0);
+	} while (luachon != 0);
 }
