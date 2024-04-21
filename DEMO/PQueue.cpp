@@ -14,16 +14,7 @@ PQueueNode* createPQueueNode(ItemType x) {
 	p->Next = NULL;
 	return p;
 }
-//void xuatTTSinhVien(ItemType x)
-//{
-//	printf("\n  %-15s  %-20s  %-10s  %-10s  %-30s  %-10s\n", "MA SO SINH VIEN", "TEN SINH VIEN", "LOP", "BENH", "CONG VIEC", "THOI GIAN");
-//
-//		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
-//		const char* jobDescription = getJobDescription(p->Info.CV);
-//
-//		printf("% %-15s  %-20s  %-10s  %-10s  %-30s  %d gio\n",  p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
-//	}
-//}
+
 //====================================================
 void showPQueueNode(PQueueNode* p) {
 	//Hien thi thong tin 1 node ra man hinh
@@ -32,7 +23,7 @@ void showPQueueNode(PQueueNode* p) {
 	const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
 	const char* jobDescription = getJobDescription(p->Info.CV);
 
-	printf("\n%-15s  %-20s  %-10s  %-10s  %-30s  %d gio\n", p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
+	printf("\n%-15s  %-20s  %-10s  %-10s  %-30s  %d ngay\n", p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
 }
 
 //====================================================
@@ -54,18 +45,33 @@ int isEmpty(PQueue qu) {
 }
 
 //====================================================
-int insert(PQueue& qu, PQueueNode* p) {
-	//Them node p vao cuoi hang doi
-	if (p == NULL) {
-		return 0;
-	}
-	if (isEmpty(qu) == 1) {
+static int insert(PQueue& qu, PQueueNode* p) {
+	if (qu.Head == NULL) {
 		qu.Head = p;
 		qu.Tail = p;
+		return 1;
+	}
+
+	PQueueNode* current = qu.Head;
+	PQueueNode* previous = NULL;
+
+	while (current != NULL && current->priority < p->priority) {
+		previous = current;
+		current = current->Next;
+	}
+
+	if (previous == NULL) {
+		p->Next = qu.Head;
+		qu.Head = p;
 	}
 	else {
-		qu.Tail->Next = p;
+		previous->Next = p;
+		p->Next = current;
+	}
+
+	if (current == NULL) {
 		qu.Tail = p;
 	}
-	return 1; //Them thanh cong
+
+	return 1;
 }

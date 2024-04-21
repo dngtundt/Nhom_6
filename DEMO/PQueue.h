@@ -7,19 +7,20 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#define _CRT_SECURE_NO_WARNINGS
 
 //Khai bao du lieu
 struct SinhVien
 {
-	char  Mssv[250];
+	char Mssv[250];
 	char TenSV[500];
 	char Lop[250];
 	int  CV;
 	int Tgian;
 	char Ill[3];
+	int SoKhoa;
+	bool IsCntt;
+	bool IsGoodHeal;
 };
-
 
 typedef SinhVien ItemType; //Khai bao kieu du lieu nguoi dung
 
@@ -46,8 +47,9 @@ void showPQueueNode(PQueueNode* p); 		//Hien thi thong tin 1 node
 void initPQueue(PQueue& qu);		//Khoi tao hang doi
 int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
-int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
+int insert(PQueue* qu, PQueueNode* node); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
+void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
 const char* getJobDescription(int jobCode);// mô tả công việc 
 PQueueNode* findStudentByStudentCode(PQueue qu, const char* mssv);// tìm kiếm phiếu yêu cầu của sinh viên trong Priority bằng mssv
 void deleteStudentFromStudentCode(PQueue& qu, const char* mssv);// đọc tên hàm
