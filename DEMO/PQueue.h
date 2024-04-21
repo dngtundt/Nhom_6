@@ -55,8 +55,9 @@ PQueueNode* findStudentByStudentCode(PQueue qu, const char* mssv);// tìm kiê�
 void deleteStudentFromStudentCode(PQueue& qu, const char* mssv);// đọc tên hàm
 void insertAStudentNodeIntoPQueue(PQueue& PQU);// them 1 phieu yeu cau cua sinh vien vao hang doi yeu tien 
 void enterInfoForStudentRequestTicket(ItemType& x);// nhap thong tin cho phieu yeu cua cua sinh vien 
-void menuYeuTien();// hien thi cong viec can xu ly
+void showRequestTypes();// hien thi cong viec can xu ly
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
-int calculatePriority(const SinhVien* x);
+int calculatePriority(const SinhVien* x); // tính độ ưu tiên của sinh viên
+bool saveToFile(PQueue qu, const char* fileName);// lưu danh sách sinh viên vào file Text
 #endif  PQueue_h

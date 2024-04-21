@@ -43,7 +43,7 @@ void enterInfoForStudentRequestTicket(ItemType& x)
 		if (x.Ill[strlen(x.Ill) - 1] == '\n')
 			x.Ill[strlen(x.Ill) - 1] = '\0';
 		x.IsGoodHeal = (x.Ill[0] == 'N');
-		menuYeuTien();
+		showRequestTypes();
 		printf("Chon cong viec muon xu li: ");
 		scanf_s("%d", &x.CV);
 

@@ -12,6 +12,7 @@ void process() {
 	const char* fileName = "dsSinhVien.txt";
 	ItemType x;
 	PQueueNode* student;
+	char mssv[250]{};
 	do
 	{
 		showMenu();
@@ -21,44 +22,65 @@ void process() {
 		switch (luachon)
 		{
 		case 1:
+		{
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;
+		}
 		case 2:
+		{
 			createPQueue(PQU);
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;
+		}
 		case 3:
+		{
 			insertAStudentNodeIntoPQueue(PQU);
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;
+		}
 		case 4:
+		{
 			populateToStudentListFromReadingFile(PQU,fileName);
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;
+		}
 		case 5:
+		{
 			printf("\n nhap mssv can xoa: ");
-			char mssv[250];
 			scanf("%s", &mssv);
 			deleteStudentFromStudentCode(PQU, mssv);
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;
+		}
 		case 6:
-			char Mssv[250];
-			printf("\n Nhap ma so sinh vien can tinh kiem trong danh sach phieu giai quyet cong viec: ");
-			scanf("%s", &Mssv);
-			student = findStudentByStudentCode(PQU, Mssv);
-				if (!student) {
-					printf("\n sinh vien co ma so sinh vien %s khong co trong phieu giai quyet cong viec ", Mssv);
-					return;
-				}
+		{
+			printf("\n Nhap ma so sinh vien can tim kiem trong danh sach phieu giai quyet cong viec: ");
+			scanf("%s", &mssv);
+			student = findStudentByStudentCode(PQU, mssv);
+			if (!student) {
+				printf("\n sinh vien co ma so sinh vien %s khong co trong phieu giai quyet cong viec ", mssv);
+				return;
+			}
 			printf("\n Thong tin phieu uu cau cua sinh vien can tim la: \n");
 			showPQueueNode(student);
 			break;
+		}
+		case 7:
+		{
+			bool canSaveToFile = saveToFile(PQU, fileName);
+			if (canSaveToFile) {
+				printf("\n Chuc mung! Ban da dong bo file luu tru danh sach phieu giai quyet yeu cau cua sinh vien hien tai thanh cong!");
+			}
+			else {
+				printf("\n Loi! That bai viec dong bo!");
+			}
+			break;
+		}
 		default:
 			break;
 		}
