@@ -24,7 +24,7 @@ void showPQueue(PQueue qu) {
 
 	int stt = 1;
 	for (PQueueNode* p = qu.Head; p != NULL; p = p->Next) {
-		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
+		const char* illnessStatus = strcmp(p->Info.Ill, "Y") == 0 || strcmp(p->Info.Ill, "y") == 0 ? "Co" : "Khong";
 		const char* jobDescription = getJobDescription(p->Info.CV);
 
 		printf("%-4d  %-15s  %-20s  %-10s  %-10s  %-30s  %d ngay\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
