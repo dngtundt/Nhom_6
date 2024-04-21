@@ -12,8 +12,8 @@
 //Khai bao du lieu
 struct SinhVien
 {
-	int  Mssv;
-	char TenSV[250];
+	char  Mssv[250];
+	char TenSV[500];
 	char Lop[250];
 	int  CV;
 	int Tgian;
@@ -48,7 +48,13 @@ int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
 int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
-void createPQueue_LoadTextFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
+const char* getJobDescription(int jobCode);// mô tả công việc 
+PQueueNode* findStudentByStudentCode(PQueue qu, const char* mssv);// tìm kiếm phiếu yêu cầu của sinh viên trong Priority bằng mssv
+void deleteStudentFromStudentCode(PQueue& qu, const char* mssv);// đọc tên hàm
+void insertAStudentNodeIntoPQueue(PQueue& PQU);// them 1 phieu yeu cau cua sinh vien vao hang doi yeu tien 
+void enterInfoForStudentRequestTicket(ItemType& x);// nhap thong tin cho phieu yeu cua cua sinh vien 
+void ReadStudentTicketsFromFile(PQueue& qu, const char* fileName);//Tao hang doi tu file TEXT
+void menuYeuTien();// hien thi cong viec can xu ly
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
 #endif  PQueue_h
