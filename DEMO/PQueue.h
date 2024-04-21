@@ -47,9 +47,16 @@ void showPQueueNode(PQueueNode* p); 		//Hien thi thong tin 1 node
 void initPQueue(PQueue& qu);		//Khoi tao hang doi
 int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
-int insert(PQueue* qu, PQueueNode* node); //Them node vao dau hang doi
+int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
 void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
+const char* getJobDescription(int jobCode);// mô tả công việc 
+PQueueNode* findStudentByStudentCode(PQueue qu, const char* mssv);// tìm kiếm phiếu yêu cầu của sinh viên trong Priority bằng mssv
+void deleteStudentFromStudentCode(PQueue& qu, const char* mssv);// đọc tên hàm
+void insertAStudentNodeIntoPQueue(PQueue& PQU);// them 1 phieu yeu cau cua sinh vien vao hang doi yeu tien 
+void enterInfoForStudentRequestTicket(ItemType& x);// nhap thong tin cho phieu yeu cua cua sinh vien 
+void menuYeuTien();// hien thi cong viec can xu ly
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
+int calculatePriority(const SinhVien* x);
 #endif  PQueue_h
