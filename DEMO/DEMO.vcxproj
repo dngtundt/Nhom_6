@@ -132,6 +132,7 @@
     <ClCompile Include="CalculatePriority.cpp" />
     <ClCompile Include="CreateListStudentTicketsByHand.cpp" />
     <ClCompile Include="PopulateToStudentListFromReadingFile.cpp" />
+    <ClCompile Include="SaveToFile.cpp" />
     <ClCompile Include="ShowListStudentTickets.cpp" />
     <ClCompile Include="InsertAStudentNodeIntoPQueue.cpp" />
     <ClCompile Include="DeletePQueueNode.cpp" />

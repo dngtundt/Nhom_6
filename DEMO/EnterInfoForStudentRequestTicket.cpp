@@ -36,7 +36,7 @@ void enterInfoForStudentRequestTicket(ItemType& x)
 		// Remove newline character if present
 		if (x.Ill[strlen(x.Ill) - 1] == '\n')
 			x.Ill[strlen(x.Ill) - 1] = '\0';
-		menuYeuTien();
+		showRequestTypes();
 		printf("Chon cong viec muon xu li: ");
 		scanf_s("%d", &x.CV);
 
