@@ -7,19 +7,20 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#define _CRT_SECURE_NO_WARNINGS
 
 //Khai bao du lieu
 struct SinhVien
 {
-	int  Mssv;
-	char TenSV[250];
+	char Mssv[250];
+	char TenSV[500];
 	char Lop[250];
 	int  CV;
 	int Tgian;
 	char Ill[3];
+	int SoKhoa;
+	bool IsCntt;
+	bool IsGoodHeal;
 };
-
 
 typedef SinhVien ItemType; //Khai bao kieu du lieu nguoi dung
 
@@ -46,9 +47,9 @@ void showPQueueNode(PQueueNode* p); 		//Hien thi thong tin 1 node
 void initPQueue(PQueue& qu);		//Khoi tao hang doi
 int isEmpty(PQueue qu);			//Kiem tra hang doi rong
 void showPQueue(PQueue qu);		//Hien noi dung cua hang doi
-int insert(PQueue& qu, PQueueNode* p); //Them node vao dau hang doi
+int insert(PQueue* qu, PQueueNode* node); //Them node vao dau hang doi
 void createPQueue(PQueue& qu); 	//Tao hang doi 
-void createPQueue_LoadTextFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
+void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName); //Tao hang doi tu file TEXT
 void showMenu();				//Hien thi menu
 void process();					//Xu ly cac chuc nang
 #endif  PQueue_h

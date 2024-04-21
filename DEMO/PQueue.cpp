@@ -67,28 +67,57 @@ void showPQueue(PQueue qu) {
 		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
 		const char* jobDescription = getJobDescription(p->Info.CV);
 
-		printf("%-4d  %-15d  %-20s  %-10s  %-10s  %-30s  %d gio\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
+		printf("%-4d  %-15s  %-20s  %-10s  %-10s  %-30s  %d ngay\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
 	}
 }
 
+static int calculatePriority(const SinhVien* x) {
+	int priority = 0;
 
-//====================================================
-int insert(PQueue& qu, PQueueNode* p) {
-	//Them node p vao cuoi hang doi
-	if (p == NULL) {
-		return 0;
-	}
-	if (isEmpty(qu) == 1) {
+	priority += (x->IsCntt ? 0 : 10000);
+
+	priority += x->SoKhoa * 1000;
+
+	priority += (x->IsGoodHeal ? 100 : 0);
+
+	priority += x->CV * 10;
+
+	priority += x->Tgian;
+
+	return priority;
+}
+
+static int insert(PQueue& qu, PQueueNode* p) {
+	if (qu.Head == NULL) {
 		qu.Head = p;
 		qu.Tail = p;
+		return 1;
+	}
+
+	PQueueNode* current = qu.Head;
+	PQueueNode* previous = NULL;
+
+	while (current != NULL && current->priority < p->priority) {
+		previous = current;
+		current = current->Next;
+	}
+
+	if (previous == NULL) {
+		p->Next = qu.Head;
+		qu.Head = p;
 	}
 	else {
-		qu.Tail->Next = p;
+		previous->Next = p;
+		p->Next = current;
+	}
+
+	if (current == NULL) {
 		qu.Tail = p;
 	}
-	return 1; //Them thanh cong
+
+	return 1;
 }
-void menuYeuTien() {
+static void menuYeuTien() {
 	printf("\n=========================================================");
 	printf("\n=              CHON CONG VIEC MUON XU LY                =");
 	printf("\n=========================================================");
@@ -167,7 +196,8 @@ void createPQueue(PQueue& PQU) {
 	}
 
 }
-void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
+
+void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName) {
 	FILE* file;
 	file = fopen(fileName, "r");
 	if (file == NULL) {
@@ -183,7 +213,7 @@ void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 	}
 
 	for (int i = 0; i < n; i++) {
-		ItemType x;
+		ItemType x{};
 		char line[1024];
 		if (fgets(line, sizeof(line), file) == NULL) {
 			printf("Error reading line %d from file %s.\n", i + 1, fileName);
@@ -191,7 +221,8 @@ void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 		}
 
 		char* token = strtok(line, "#");
-		x.Mssv = atoi(token);
+		strncpy(x.Mssv, token, sizeof(x.Mssv) - 1);
+		x.Mssv[sizeof(x.Mssv) - 1] = '\0';
 
 		token = strtok(NULL, "#");
 		strncpy(x.TenSV, token, sizeof(x.TenSV) - 1);
@@ -201,9 +232,20 @@ void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 		strncpy(x.Lop, token, sizeof(x.Lop) - 1);
 		x.Lop[sizeof(x.Lop) - 1] = '\0';
 
+		char SoKhoa[3];
+		strncpy(SoKhoa, x.Lop, 2);
+		SoKhoa[2] = '\0';
+		x.SoKhoa = atoi(SoKhoa);
+
+		x.IsCntt = (strstr(x.Lop, "DHTH") != NULL ||
+			strstr(x.Lop, "DHBM") != NULL ||
+			strstr(x.Lop, "DHKHDL") != NULL);
+		
 		token = strtok(NULL, "#");
 		strncpy(x.Ill, token, sizeof(x.Ill) - 1);
 		x.Ill[sizeof(x.Ill) - 1] = '\0';
+
+		x.IsGoodHeal = (x.Ill[0] == 'N');
 
 		token = strtok(NULL, "#");
 		x.CV = atoi(token);
@@ -217,6 +259,7 @@ void createPQueue_LoadTextFile(PQueue& qu, const char* fileName) {
 			continue;
 		}
 
+		p->priority = calculatePriority(&x);
 
 		if (insert(qu, p) == 0) {
 			printf("Error inserting node into priority queue for line %d.\n", i + 1);
@@ -257,7 +300,7 @@ void process() {
 			showPQueue(PQU);
 			break;
 		case 3:
-			createPQueue_LoadTextFile(PQU, fileName);
+			populateToStudentListFromReadingFile(PQU, fileName);
 			showPQueue(PQU);
 			break;
 		default:
