@@ -34,17 +34,14 @@ void enterInfoForStudentRequestTicket(ItemType& x)
 		x.IsCntt = (strstr(x.Lop, "DHTH") != NULL ||
 			strstr(x.Lop, "DHBM") != NULL ||
 			strstr(x.Lop, "DHKHDL") != NULL);
-		printf("Co the co benh khong (Y/N): ");
-		getchar();
-		fflush(stdin); // Flush the input buffer
-		fgets(x.Ill, sizeof(x.Ill), stdin); // Read input using fgets
-
-		// Remove newline character if present
+		printf("Sinh vien nay co benh hay khong? (Y/N): ");
+		fflush(stdin);
+		fgets(x.Ill, sizeof(x.Ill), stdin);
 		if (x.Ill[strlen(x.Ill) - 1] == '\n')
 			x.Ill[strlen(x.Ill) - 1] = '\0';
-		x.IsGoodHeal = (x.Ill[0] == 'N');
+		x.IsGoodHeal = (x.Ill[0] == 'N' || x.Ill[0] == 'n');
 		showRequestTypes();
-		printf("Chon cong viec muon xu li: ");
+		printf("\nChon cong viec muon xu li: ");
 		scanf_s("%d", &x.CV);
 
 		printf("Nhap thoi gian dien phieu: ");
