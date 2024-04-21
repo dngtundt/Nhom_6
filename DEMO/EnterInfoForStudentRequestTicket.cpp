@@ -27,7 +27,13 @@ void enterInfoForStudentRequestTicket(ItemType& x)
 		// Remove newline character if present
 		if (x.Lop[strlen(x.Lop) - 1] == '\n')
 			x.Lop[strlen(x.Lop) - 1] = '\0';
-
+		char SoKhoa[3];
+		strncpy(SoKhoa, x.Lop, 2);
+		SoKhoa[2] = '\0';
+		x.SoKhoa = atoi(SoKhoa);
+		x.IsCntt = (strstr(x.Lop, "DHTH") != NULL ||
+			strstr(x.Lop, "DHBM") != NULL ||
+			strstr(x.Lop, "DHKHDL") != NULL);
 		printf("Co the co benh khong (Y/N): ");
 		getchar();
 		fflush(stdin); // Flush the input buffer
@@ -36,6 +42,7 @@ void enterInfoForStudentRequestTicket(ItemType& x)
 		// Remove newline character if present
 		if (x.Ill[strlen(x.Ill) - 1] == '\n')
 			x.Ill[strlen(x.Ill) - 1] = '\0';
+		x.IsGoodHeal = (x.Ill[0] == 'N');
 		menuYeuTien();
 		printf("Chon cong viec muon xu li: ");
 		scanf_s("%d", &x.CV);

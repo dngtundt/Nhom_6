@@ -39,7 +39,6 @@ void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName) {
 		strncpy(SoKhoa, x.Lop, 2);
 		SoKhoa[2] = '\0';
 		x.SoKhoa = atoi(SoKhoa);
-
 		x.IsCntt = (strstr(x.Lop, "DHTH") != NULL ||
 			strstr(x.Lop, "DHBM") != NULL ||
 			strstr(x.Lop, "DHKHDL") != NULL);
