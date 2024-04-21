@@ -45,7 +45,7 @@ int isEmpty(PQueue qu) {
 }
 
 //====================================================
-static int insert(PQueue& qu, PQueueNode* p) {
+int insert(PQueue& qu, PQueueNode* p) {
 	if (qu.Head == NULL) {
 		qu.Head = p;
 		qu.Tail = p;

@@ -27,6 +27,6 @@ void showPQueue(PQueue qu) {
 		const char* illnessStatus = (strcmp(p->Info.Ill, "Y") == 0) ? "Co" : "Khong";
 		const char* jobDescription = getJobDescription(p->Info.CV);
 
-		printf("%-4d  %-15s  %-20s  %-10s  %-10s  %-30s  %d gio\n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian);
+		printf("%-4d  %-15s  %-20s  %-10s  %-10s  %-30s  %d gio, priority  : %d \n", stt++, p->Info.Mssv, p->Info.TenSV, p->Info.Lop, illnessStatus, jobDescription, p->Info.Tgian,p->priority);
 	}
 }

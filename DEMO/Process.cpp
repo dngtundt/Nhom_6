@@ -35,7 +35,7 @@ void process() {
 			showPQueue(PQU);
 			break;
 		case 4:
-			ReadStudentTicketsFromFile(PQU,fileName);
+			populateToStudentListFromReadingFile(PQU,fileName);
 			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien: ");
 			showPQueue(PQU);
 			break;

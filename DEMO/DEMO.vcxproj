@@ -129,7 +129,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CalculatePriority.cpp" />
     <ClCompile Include="CreateListStudentTicketsByHand.cpp" />
+    <ClCompile Include="PopulateToStudentListFromReadingFile.cpp" />
     <ClCompile Include="ShowListStudentTickets.cpp" />
     <ClCompile Include="InsertAStudentNodeIntoPQueue.cpp" />
     <ClCompile Include="DeletePQueueNode.cpp" />
@@ -139,7 +141,6 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="PQueue.cpp" />
     <ClCompile Include="Process.cpp" />
-    <ClCompile Include="ReadStudentTicketsFromFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\priority-queue\dsSinhVien.txt" />

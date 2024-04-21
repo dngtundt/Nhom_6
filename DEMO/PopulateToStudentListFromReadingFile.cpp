@@ -1,8 +1,6 @@
 #include"PQueue.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-void ReadStudentTicketsFromFile(PQueue& qu, const char* fileName) {
+
+void populateToStudentListFromReadingFile(PQueue& qu, const char* fileName) {
 	FILE* file;
 	file = fopen(fileName, "r");
 	if (file == NULL) {
@@ -18,14 +16,14 @@ void ReadStudentTicketsFromFile(PQueue& qu, const char* fileName) {
 	}
 
 	for (int i = 0; i < n; i++) {
-		ItemType x;
+		ItemType x{};
 		char line[1024];
 		if (fgets(line, sizeof(line), file) == NULL) {
 			printf("Error reading line %d from file %s.\n", i + 1, fileName);
 			continue;
 		}
-		char* token;
-		token = strtok(line, "#");
+
+		char* token = strtok(line, "#");
 		strncpy(x.Mssv, token, sizeof(x.Mssv) - 1);
 		x.Mssv[sizeof(x.Mssv) - 1] = '\0';
 
@@ -37,9 +35,20 @@ void ReadStudentTicketsFromFile(PQueue& qu, const char* fileName) {
 		strncpy(x.Lop, token, sizeof(x.Lop) - 1);
 		x.Lop[sizeof(x.Lop) - 1] = '\0';
 
+		char SoKhoa[3];
+		strncpy(SoKhoa, x.Lop, 2);
+		SoKhoa[2] = '\0';
+		x.SoKhoa = atoi(SoKhoa);
+
+		x.IsCntt = (strstr(x.Lop, "DHTH") != NULL ||
+			strstr(x.Lop, "DHBM") != NULL ||
+			strstr(x.Lop, "DHKHDL") != NULL);
+
 		token = strtok(NULL, "#");
 		strncpy(x.Ill, token, sizeof(x.Ill) - 1);
 		x.Ill[sizeof(x.Ill) - 1] = '\0';
+
+		x.IsGoodHeal = (x.Ill[0] == 'N');
 
 		token = strtok(NULL, "#");
 		x.CV = atoi(token);
@@ -53,6 +62,7 @@ void ReadStudentTicketsFromFile(PQueue& qu, const char* fileName) {
 			continue;
 		}
 
+		p->priority = calculatePriority(&x);
 
 		if (insert(qu, p) == 0) {
 			printf("Error inserting node into priority queue for line %d.\n", i + 1);
