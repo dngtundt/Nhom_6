@@ -24,4 +24,7 @@ void showMenu() {
 	printf("\n5. Xoa mot phieu giai quyet yeu cau cong viec cua sinh vien");
 	printf("\n6. Tim kiem phieu giai quyet yeu cau cong viec cua sinh vien bang ma so sinh vien");
 	printf("\n7. Dong bo file luu tru danh sach phieu giai quyet yeu cau cua sinh vien hien tai");
+	printf("\n8. Hien thi danh sach phieu giai quyet yeu cau cua sinh vien sau khi uu tien");
+	printf("\n9. Hien thi sinh vien lop co nhieu viec can khoa xu ly nhat");
+	printf("\n10. Hien thi danh sach 10 viec sap sua duoc xu ly");
 }

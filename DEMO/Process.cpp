@@ -81,6 +81,26 @@ void process() {
 			}
 			break;
 		}
+		case 8:
+		{
+			printf("\nNhap ma so sinh vien can uu tien: ");
+			scanf("%s", &mssv);
+			prioritizeJob(PQU, mssv);
+			printf("\nDanh sach phieu giai quyet yeu cau cua sinh vien sau khi uu tien: ");
+			showPQueue(PQU);
+			break;
+		}
+		case 9:
+		{
+			findClassWithMostJobs(PQU);
+			printf("\nSinh vien lop co nhieu viec can khoa xu ly nhat:");
+			break;
+		}
+		case 10:
+		{
+			showNext10Jobs(PQU);
+			break;
+		}
 		default:
 			break;
 		}
